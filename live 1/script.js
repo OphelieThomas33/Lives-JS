@@ -42,5 +42,4 @@ const object = {
     prenom : "Ophélie",
     age : 35
 }
-  
 
