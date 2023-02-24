@@ -32,13 +32,54 @@ const apiCall = (word) => {
         .then((response) => response.json())
         .then((data) => {
             // Etape 3 : récupérer les données
-            const wordInformations = data[0]
-            console.log(wordInformations.word)
+            const informationsNeeded = extractData(data[0])
+            // Etape 4 : Ajouter les infos sur la page
+            renderToHTML(informationsNeeded)
+            console.log(informationsNeeded)
+        })
+        .catch(() => {
+            alert('Le mot demandé n\'exsite pas')
+            console.log('ERROR')
         })
 
         
 }
 
+const extractData = (data) => {
+    // 1 - mot
+    const word = data.word
+    // 2 - phonétique
+    const phonetics = findProps(data.phonetics, 'text')
+    // 3 - prononciation(audio)
+    const pronoun = findProps(data.phonetics, 'audio')
+    // 4 - Définition(s)
+    const meanings = data.meanings
+
+    return {
+        word: word,
+        phonetic: phonetics,
+        pronoun: pronoun,
+        meanings: meanings
+    }
+}
+
+const findProps = (array, name) => {
+    // fonction qui parcourt un tableau d'objets
+    for (const element of array) {
+        // et cherche dans ce tableau si l'objet en cours contient une certaine propriété 
+        const currentObject = element
+        const hasProp = currentObject.hasOwnProperty(name)
+        // alors elle renvoie cette propriété
+        if (hasProp) {
+            return currentObject[name]
+        }
+    }
+}
+
+const renderToHTML = () => {
+    console.log('ajouter les infos sur la page')
+
+}
 
 // Lancement du programme : 
 watchSubmit()
