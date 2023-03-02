@@ -76,10 +76,58 @@ const findProps = (array, name) => {
     }
 }
 
-const renderToHTML = () => {
-    console.log('ajouter les infos sur la page')
+const renderToHTML = (data) => {
+    const card = document.querySelector(".js-card")
+    card.classList.remove('card--hidden')
+    const title = document.querySelector(".js-card-title")
+    title.textContent = data.word
+    const phonetic = document.querySelector(".js-card-phonetic")
+    phonetic.textContent = data.phonetic
+    // CRéation d'éléments HTML dynamique
+    const list = document.querySelector(".js-card-list")
+    for (let i = 0; i < data.meanings.length; i++) {
+        const meaning = data.meanings[i]
+        const partOfSpeech = meaning.partOfSpeech
+        const definition = meaning.definitions[0].definition
 
+        // // Solution 1 - avec un inner HTML
+        // list.innerHTML += `
+        // <li class="card__meaning">
+        //     <p class="card__part-of-speech">${partOfSpeech}</p>
+        //     <p class="card__definition">${definition}</p>
+        // </li>`
+
+        // Solution 2 - avec la création d'éléments
+        const li = document.createElement('li')
+        li.classList.add("card__meaning")
+        const pPartOfSpeech = document.createElement('p')
+        pPartOfSpeech.classList.add("card__part-of-speech")
+        pPartOfSpeech.textContent = partOfSpeech
+        const pDefinition = document.createElement('p')
+        pDefinition.classList.add("card__definition")
+        pDefinition.textContent = definition
+
+        li.appendChild(pPartOfSpeech)   // on ajoute les 'p' au 'li'
+        li.appendChild(pDefinition)
+        list.appendChild(li) // on ajoute le 'li' dans le 'ul'
+    }
+
+    // Ajout de l'audio
+    const button = document.querySelector('.js-card-button')
+    const audio = new Audio(data.pronoun)
+    button.addEventListener('click', () => {    
+        button.classList.remove("card__player--off")
+        button.classList.add("card__player--on") 
+        audio.play()
+    })
+    audio.addEventListener('ended', () => {
+        button.classList.remove("card__player--on") 
+        button.classList.add("card__player--off")
+    })
 }
+
+// effacer la carte quand on efface le mot
+
 
 // Lancement du programme : 
 watchSubmit()

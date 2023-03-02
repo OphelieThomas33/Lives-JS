@@ -114,6 +114,10 @@ body {
     background-color: rgba(0,0,0,0.15);
 }
 
+.card--hidden {
+    display: none;
+}
+
 .card__bloc {
     padding: 2rem;
     border-bottom: solid 1px rgba(255,255,255, 0.1);
